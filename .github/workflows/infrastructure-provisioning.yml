@@ -16,10 +16,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Run Go unit tests
+      - name: Run Unit tests
         run: |
-          cd app/src
-          go test -v
+          python -m pytest app/test/
 
       - name: Install dependencies
         run: |
