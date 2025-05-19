@@ -11,5 +11,5 @@ terraform {
 
 provider "aws" {
   region  = var.region
-  profile = var.profile
+  profile = terraform.workspace == "default" ? null : var.profile
 }
