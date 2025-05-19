@@ -18,8 +18,7 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          pip install pytest
-          pip install pytest-cov
+            python -m pip install -r app/test/requirements.txt
 
       - name: Run Unit tests
         run: |
