@@ -27,10 +27,13 @@ def get_table():
 
 def lambda_handler(event, context):
     logger.info(f"Received event: {json.dumps(event)}")
-
+    
     try:
-        http_method = event.get('httpMethod')
-        path = event.get('path')
+        # Support both HTTP API v2.0 and legacy event formats
+        http_method = event.get('httpMethod') or event.get('requestContext', {}).get('http', {}).get('method')
+        path = event.get('path') or event.get('rawPath') or event.get('requestContext', {}).get('http', {}).get('path')
+        logger.info(f"HTTP Method: {http_method}, Path: {path}")
+
         # Handle GET Request - Fetch All Books
         if http_method == 'GET' and path == books_path:
             return get_all_books()
@@ -95,6 +98,9 @@ def get_book(book_id):
 def get_all_books():
     try:
         table = get_table()
+        logger.info('Fetching all books from DynamoDB')
+        logger.info(table)
+        logger.info(table.name)
         scan_params = {
             'TableName': table.name
         }
